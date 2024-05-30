@@ -1,0 +1,3 @@
+exclude notebooks/*
+exclude demo_data/*
+exclude proportion_localised/__pycache__/*

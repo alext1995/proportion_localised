@@ -1,0 +1,6 @@
+'numpy',  # Wide range for maximum compatibility
+'opencv-python',  # No version specified
+'scikit-image',  # No version specified
+'scipy',  # Wide range for maximum compatibility
+'scikit-learn',
+'shapely',
