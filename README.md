@@ -2,7 +2,18 @@
 Proportion Localised is a novel metric for visual anomaly detection. The metric reports the proportion of anomalies in the dataset sufficiently localized at the best threshold. Note that one image may contain many anomalies.
 
 ## Getting started - IPython demo
-The Github repo (https://github.com/alext1995/proportion-localised) contains demo data and a notebook. Run through the notebook to get started!
+The Github repo (https://github.com/alext1995/proportion-localised) contains demo data and a notebook:
+
+notebooks/pl_demo.ipynb
+
+Clone the repo and run through the notebook to get started!
+
+## Pip package
+Install the code with:
+```
+pip install proportion-localised
+```
+PyPI link: https://pypi.org/project/proportion-localised/
 
 ## Advantages of PL
 PL works by splitting each ground truth image into individual anomalies (non-overlapping regions), applying the minimum area rotated bounding box to each anomaly, and measuring the IoU between the prediction and each bounding box. If the IoU > 0.3 (the default IoU limit), then the anomaly is classified as localized. A minimum width and height is enforced for each anomaly, and anomalies with a degree of overlap between each other are merged. This metric provides the researcher or professional with an interpretable method of evaluation for anomaly detection algorithms.
