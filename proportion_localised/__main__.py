@@ -1,9 +1,6 @@
-# © 2024 Alexander Taylor
-from sklearn.metrics import roc_auc_score, average_precision_score, precision_recall_curve, roc_curve
+# Copyright © 2024 Alexander Taylor
 import numpy as np
 from skimage import measure 
-import scipy.spatial.distance as dist
-from skimage import measure
 from typing import Union
 from torch import Tensor
 from scipy.spatial.distance import cdist
@@ -242,15 +239,13 @@ def PL_calculation(heatmaps, targets, min_target_scale=8, n_thresholds=25,
                        ):
     IoUs = []
     
-    min_pred = heatmaps.min()
-    max_pred = heatmaps.max()
-    
     if not isinstance(heatmaps, np.ndarray):
         heatmaps = heatmaps.numpy()
     if not isinstance(targets, np.ndarray):
         targets = targets.numpy()
     
-    thresholds = [threshold for threshold in np.linspace(min_pred, max_pred, n_thresholds+2)[1:-1]]
+    percentiles = np.linspace(0, 100, n_thresholds+2)[1:-1]
+    thresholds = np.percentile(heatmaps, percentiles)
     
     all_prediction_masks = []
     all_temp_masks = []
@@ -271,7 +266,7 @@ def PL_calculation(heatmaps, targets, min_target_scale=8, n_thresholds=25,
             center_x, center_y = bounding_box_info[0]
             region_centers_.append((center_y, center_x))
             
-        distances = dist.cdist(np.array([xx.ravel(), 
+        distances = cdist(np.array([xx.ravel(), 
                                          yy.ravel()]).T, 
                                region_centers_, 
                                metric='euclidean').reshape(256, 256, len(region_centers_))
@@ -394,6 +389,12 @@ def calculate(preds: Union[np.ndarray, Tensor],
               return_score_only: bool = False) -> Union[float, tuple]:
     '''
     Calculates and returns the PL score
+    iou_limit: float = 0.3 : PL reports the proportion of anomalies which meet this IoU limit
+    min_target_scale: float = 1/8 : proportion of the image that width/height of anomalies will be scaled to
+    overlap_limit: float = 1/3 : if this proportion of a smaller bounding box overlaps with a larger one they are merged
+    n_thresholds: int = 25 : number of prediction heatmap thresholds to loop through
+    anomaly_likelihood_definitely_increasing: bool = False : whether we can assume that lower predictions are less likely to be anomalies
+    return_score_only: bool = False : if True, only the score is returned, if False, the score and the data used to calculate the score is returned
     Only set anomaly_likelihood_definitely_increasing to True
     if you know that lower predictions represent no anomaly
     and higher represents anomaly. Setting to True will double the speed, as we 

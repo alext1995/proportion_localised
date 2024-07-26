@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='proportion_localised',  
-    version='0.1.1',
+    version='0.1.3',
     description="Proportion Localised is a novel metric for visual anomaly detection, intended to be more interpretable than existing metrics. Published in Transactions of Machine Learning Research (TMLR) 2024: VisionAD, a software package of performant anomaly detection algorithms, and Proportion Localised, an interpretable metric.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -16,8 +16,5 @@ setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.6',
-    package_data={
-        'proportation-localised': ['../demo_data/pl_demo_data.pk', '../notebooks/pl_testing.ipynb'],
-    },
     include_package_data=True,
 )
