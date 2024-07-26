@@ -31,7 +31,7 @@ def create_bounding_box_mask(mask_shape, bounding_box_info):
     this function will return a mask with the bounding box filled
     '''
     box = cv2.boxPoints(bounding_box_info)
-    box = np.int0(box)
+    box = np.intp(box)
     mask = np.zeros(mask_shape, dtype=np.uint8)
     cv2.drawContours(mask, [box], 0, 255, -1)
     return mask
